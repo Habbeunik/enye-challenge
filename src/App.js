@@ -1,24 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import UserForm from './components/form';
+import UserTable from './components/table';
+import Typography from '@material-ui/core/Typography';
+
 
 function App() {
+  const [users, setUsers] = React.useState([]);
+  
+  function saveUser(user) {
+    setUsers(prevUsers => ([...prevUsers, user]))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{padding: '30px 0px'}}>
+      <Typography variant="h3" gutterBottom style={{color: '#5f2979', fontWeight: 'bold', textAlign: 'center'}}>
+        Enye Challenge
+      </Typography>
+      <UserForm onSubmit={saveUser} />
+      <UserTable data={users} />
     </div>
   );
 }

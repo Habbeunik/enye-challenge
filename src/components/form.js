@@ -1,0 +1,94 @@
+import React from 'react';
+
+import Input from './input';
+import Typography from '@material-ui/core/Typography';
+import Button from './button';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+const styles  = {
+  form: {
+    width: '400px',
+    margin: '100px auto'
+  }
+  
+}
+export default function UserForm({onSubmit}) {
+  const INITIAL_STATE = {
+    firstName: '',
+    lastName: '',
+    dob: new Date(),
+    age: '',
+    hobby: ''
+  }
+  const [values, setValues] = React.useState(INITIAL_STATE)
+
+  function getInputProps(fieldName) {
+    return {
+      name: fieldName,
+      value: values[fieldName],
+    }
+  }
+
+  function getOnchageHandler(fieldName) {
+    return (e) => {
+      console.log('e.target', e.target)
+      if(typeof e.persist === 'function' ) {
+        e.persist();
+      }
+      setValues(prevValues => ({...prevValues, [fieldName]: fieldName === 'dob' ? e : e.target.value}));
+      if(fieldName === 'dob') {
+        function _calculateAge(birthday) { // birthday is a date
+          var ageDifMs = Date.now() - birthday.getTime();
+          var ageDate = new Date(ageDifMs); // miliseconds from epoch
+          return Math.abs(ageDate.getUTCFullYear() - 1970);
+        }
+        setValues(prevValues => ({...prevValues, age: _calculateAge(e)}))
+      }
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onSubmit(values)
+    setValues(INITIAL_STATE);
+  }
+
+  const firstNameInputProps = getInputProps('firstName');
+  const lastNameInputProps = getInputProps('lastName');
+  const dobInputProps = getInputProps('dob');
+  const ageInputProps = getInputProps('age');
+  const hobbyInputProps = getInputProps('hobby');
+
+  return (
+    <form style={styles.form} onSubmit={handleSubmit} >
+       <Typography variant="h5" gutterBottom>
+        User form
+      </Typography>
+      <Input placeholder="First Name" {...firstNameInputProps} onChange={getOnchageHandler('firstName')}   />
+      <Input placeholder="Last Name"  {...lastNameInputProps} onChange={getOnchageHandler('lastName')} />
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <KeyboardDatePicker
+          disableToolbar
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id="date-picker-inline"
+          label="Date picker inline"
+          {...dobInputProps} 
+          onChange={getOnchageHandler('dob')}
+          KeyboardButtonProps={{
+            'aria-label': 'change date',
+          }}
+        />
+        </MuiPickersUtilsProvider>
+      <Input placeholder="Age"  {...ageInputProps } onChange={getOnchageHandler('age')} />
+      <Input placeholder="Hobby"  {...hobbyInputProps} onChange={getOnchageHandler('hobby')}  />
+      <Button label="Add User"  />
+    </form>
+  )
+}
