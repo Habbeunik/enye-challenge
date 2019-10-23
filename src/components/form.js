@@ -3,12 +3,7 @@ import React from 'react';
 import Input from './input';
 import Typography from '@material-ui/core/Typography';
 import Button from './button';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import Calendar from 'react-calendar';
 
 const styles  = {
   form: {
@@ -40,16 +35,18 @@ export default function UserForm({onSubmit}) {
       if(typeof e.persist === 'function' ) {
         e.persist();
       }
-      setValues(prevValues => ({...prevValues, [fieldName]: fieldName === 'dob' ? e : e.target.value}));
-      if(fieldName === 'dob') {
-        function _calculateAge(birthday) { // birthday is a date
-          var ageDifMs = Date.now() - birthday.getTime();
-          var ageDate = new Date(ageDifMs); // miliseconds from epoch
-          return Math.abs(ageDate.getUTCFullYear() - 1970);
-        }
-        setValues(prevValues => ({...prevValues, age: _calculateAge(e)}))
-      }
+      setValues(prevValues => ({...prevValues, [fieldName]: e.target.value}));
     }
+  }
+
+  function handleCalenderChange(date) {
+    function _calculateAge(birthday) { // birthday is a date
+      var ageDifMs = Date.now() - birthday.getTime();
+      var ageDate = new Date(ageDifMs); // miliseconds from epoch
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
+    };
+
+    setValues(prevValues => ({...prevValues, age: _calculateAge(date), dob: date}))
   }
 
   function handleSubmit(e) {
@@ -71,22 +68,12 @@ export default function UserForm({onSubmit}) {
       </Typography>
       <Input placeholder="First Name" {...firstNameInputProps} onChange={getOnchageHandler('firstName')}   />
       <Input placeholder="Last Name"  {...lastNameInputProps} onChange={getOnchageHandler('lastName')} />
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
-          {...dobInputProps} 
-          onChange={getOnchageHandler('dob')}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        </MuiPickersUtilsProvider>
-      <Input placeholder="Age"  {...ageInputProps } onChange={getOnchageHandler('age')} />
+      <span>Date of Birth</span>
+      <Calendar
+        onChange={handleCalenderChange}
+        {...dobInputProps}
+      />
+      <Input placeholder="Age" disabled {...ageInputProps } onChange={getOnchageHandler('age')} />
       <Input placeholder="Hobby"  {...hobbyInputProps} onChange={getOnchageHandler('hobby')}  />
       <Button label="Add User"  />
     </form>

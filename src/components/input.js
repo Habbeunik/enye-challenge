@@ -1,22 +1,7 @@
 import React from 'react';
 
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
-
-const CssTextField = withStyles({
-  root: {
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        border: '1.03303px solid #a2a2a2',
-        borderRadius: '6.21302px',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#ccc',
-        borderWidth: '1px',
-      },
-    },
-  },
-})(TextField)
 
 const useStyles = makeStyles(_ => ({
   input: {
