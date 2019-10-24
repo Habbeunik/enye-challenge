@@ -1,9 +1,11 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import Input from './input';
 import Typography from '@material-ui/core/Typography';
 import Button from './button';
 import Calendar from 'react-calendar';
+import { ADD_USER } from '../redux/users/action';
 
 const styles  = {
   form: {
@@ -21,6 +23,7 @@ export default function UserForm({onSubmit}) {
     hobby: ''
   }
   const [values, setValues] = React.useState(INITIAL_STATE)
+  const dispatch = useDispatch();
 
   function getInputProps(fieldName) {
     return {
@@ -50,7 +53,7 @@ export default function UserForm({onSubmit}) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmit(values)
+    dispatch({type: ADD_USER, payload: values})
     setValues(INITIAL_STATE);
   }
 

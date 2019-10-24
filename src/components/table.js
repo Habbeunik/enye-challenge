@@ -1,4 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+
+import { usersSelector } from '../redux/users'
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -26,8 +29,10 @@ const useStyles = makeStyles({
   }
 });
 
-export default function UserTable({data}) {
+export default function UserTable() {
   const classes = useStyles();
+  const users = useSelector(usersSelector);
+  console.log('user', users)
 
   return (
    <div style={{padding: '0px 10%'}} >
@@ -46,7 +51,7 @@ export default function UserTable({data}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, idx) => (
+          {users.map((row, idx) => (
             <TableRow key={idx}>
               <TableCell align="left" className={classes.bodyText}>
                 {row.firstName}
