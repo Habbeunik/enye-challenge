@@ -31,7 +31,6 @@ export default function UserForm({onSubmit}) {
 
   function getOnchageHandler(fieldName) {
     return (e) => {
-      console.log('e.target', e.target)
       if(typeof e.persist === 'function' ) {
         e.persist();
       }
