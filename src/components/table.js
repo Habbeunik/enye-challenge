@@ -32,7 +32,6 @@ const useStyles = makeStyles({
 export default function UserTable() {
   const classes = useStyles();
   const users = useSelector(usersSelector);
-  console.log('user', users)
 
   return (
    <div style={{padding: '0px 10%'}} >

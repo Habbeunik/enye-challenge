@@ -5,7 +5,7 @@ import Input from './input';
 import Typography from '@material-ui/core/Typography';
 import Button from './button';
 import Calendar from 'react-calendar';
-import { ADD_USER } from '../redux/users/action';
+import { addUser } from '../redux/users/action';
 
 const styles  = {
   form: {
@@ -13,7 +13,8 @@ const styles  = {
     margin: '100px auto'
   }
   
-}
+};
+
 export default function UserForm({onSubmit}) {
   const INITIAL_STATE = {
     firstName: '',
@@ -53,7 +54,7 @@ export default function UserForm({onSubmit}) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch({type: ADD_USER, payload: values})
+    dispatch(addUser(values))
     setValues(INITIAL_STATE);
   }
 
